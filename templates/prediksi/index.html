@@ -1,0 +1,163 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h3 class="mb-4" style="font-family:'Poppins',sans-serif; font-weight:600;">
+    Hasil Prediksi Depresi
+</h3>
+
+<div class="card shadow">
+
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span style="font-weight:600;">Daftar Hasil Prediksi</span>
+    </div>
+
+    <div class="card-body">
+
+        <p style="font-weight:500;">
+            Total Data : <span id="totalData">{{ data|length }}</span>
+        </p>
+
+        <!-- SEARCH -->
+        <div class="d-flex justify-content-end mb-3">
+
+            <input type="text" id="searchInput" class="form-control form-control-sm" placeholder="🔍 Cari nama siswa..."
+                style="width:250px; font-style:italic; color:#6c757d;">
+
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle" id="tabelPrediksi">
+
+                <thead class="table-dark text-center align-middle">
+
+                    <tr>
+                        <th class="text-start" style="width:220px;">Nama Siswa</th>
+                        <th style="width:180px;">Hasil Prediksi</th>
+                        <th style="width:160px;">Probabilitas</th>
+                        <th style="width:180px;">Tanggal</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for d in data %}
+
+                    <tr class="align-middle">
+
+                        <!-- Nama -->
+                        <td class="text-start fw-semibold">
+                            {{ d[0] }}
+                        </td>
+
+                        <!-- Hasil Prediksi -->
+                        <td class="text-center">
+
+                            {% if d[1] == "Depresi" %}
+
+                            <span class="badge bg-danger">
+                                Depresi
+                            </span>
+
+                            {% else %}
+
+                            <span class="badge bg-success">
+                                Tidak Depresi
+                            </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <!-- Probabilitas -->
+                        <td class="text-center">
+
+                            <div class="progress" style="height:20px;">
+
+                                <div class="progress-bar
+                                {% if d[1] == 'Depresi' %}
+                                bg-danger
+                                {% else %}
+                                bg-success
+                                {% endif %}" role="progressbar" data-width="{{ d[2] }}">
+
+                                    {{ d[2] }}%
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <!-- Tanggal -->
+                        <td class="text-center">
+                            {{ d[3] }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /* SEARCH DATA */
+
+    const searchInput = document.getElementById("searchInput");
+
+    searchInput.addEventListener("keyup", function () {
+
+        let keyword = searchInput.value.toLowerCase();
+
+        let rows = document.querySelectorAll("#tabelPrediksi tbody tr");
+
+        let count = 0;
+
+        rows.forEach(function (row) {
+
+            let nama = row.cells[0].textContent.toLowerCase();
+
+            if (nama.includes(keyword)) {
+
+                row.style.display = "";
+                count++;
+
+            } else {
+
+                row.style.display = "none";
+
+            }
+
+        });
+
+        document.getElementById("totalData").innerText = count;
+
+    });
+
+
+
+    /* PROGRESS BAR WIDTH */
+
+    document.querySelectorAll(".progress-bar").forEach(function (bar) {
+
+        let width = bar.dataset.width;
+
+        bar.style.width = width + "%";
+
+    });
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,150 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h3 class="mb-4" style="font-family:'Poppins',sans-serif; font-weight:600;">
+    Data Siswa
+</h3>
+
+<div class="card shadow">
+
+    <div class="card-header d-flex justify-content-between align-items-center">
+
+        <span style="font-weight:600;">Daftar Siswa</span>
+
+        <a href="/siswa/tambah" class="btn btn-primary btn-sm">
+            + Tambah Siswa
+        </a>
+
+    </div>
+
+    <div class="card-body">
+
+        <!-- INFO JUMLAH SISWA -->
+        <p style="font-weight:500;">
+            Total Siswa : <span id="totalSiswa">{{ data|length }}</span>
+        </p>
+
+        <!-- SEARCH DAN FILTER -->
+        <div class="d-flex justify-content-end gap-2 mb-3 align-items-center">
+
+            <div class="input-group input-group-sm" style="width:260px;">
+
+                <span class="input-group-text bg-white">
+                    <i class="bi bi-search"></i>    
+                </span>
+
+                <input type="text" id="searchInput" class="form-control" placeholder="Cari siswa..."
+                    style="font-style:italic; color:#6c757d;">
+
+            </div>
+
+            <select id="filterGender" class="form-select form-select-sm"
+                style="width:170px; font-style:italic; color:#6c757d;">
+
+                <option value="">Jenis Kelamin</option>
+                <option value="L">Laki-laki</option>
+                <option value="P">Perempuan</option>
+
+            </select>
+
+        </div>
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle" id="tabelSiswa">
+
+                <thead class="table-dark">
+                    <tr>
+                        <th style="width:60px;">No</th>
+                        <th>Nama Siswa</th>
+                        <th style="width:150px;">Jenis Kelamin</th>
+                        <th style="width:100px;">Umur</th>
+                        <th style="width:100px;">Kelas</th>
+                        <th style="width:150px;">Aksi</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for siswa in data %}
+                    <tr data-gender="{{ siswa[2] }}">
+                        <td>{{ loop.index }}</td>
+                        <td>{{ siswa[1] }}</td>
+
+                        <td>
+                            {% if siswa[2] == 'L' %}
+                            <span class="badge bg-primary">
+                                Laki-laki
+                            </span>
+
+                            {% else %}
+                            <span class="badge" style="background-color:#ff4da6;">
+                                Perempuan
+                            </span>
+                            {% endif %}
+                        </td>
+
+                        <td>{{ siswa[3] }}</td>
+
+                        <td>{{ siswa[4] }}</td>
+
+                        <td>
+                            <a href="/siswa/edit/{{ siswa[0] }}" class="btn btn-warning btn-sm">
+                                Edit
+                            </a>
+
+                            <a href="/siswa/delete/{{ siswa[0] }}" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+
+    const searchInput = document.getElementById("searchInput");
+    const filterGender = document.getElementById("filterGender");
+
+    searchInput.addEventListener("keyup", filterTable);
+    filterGender.addEventListener("change", filterTable);
+
+    function filterTable() {
+
+        let search = searchInput.value.toLowerCase();
+        let gender = filterGender.value;
+
+        let rows = document.querySelectorAll("#tabelSiswa tbody tr");
+
+        let visibleCount = 0;
+
+        rows.forEach(function (row) {
+
+            let nama = row.cells[1].textContent.toLowerCase();
+            let genderRow = row.dataset.gender;
+
+            let matchSearch = nama.includes(search);
+            let matchGender = gender === "" || genderRow === gender;
+
+            if (matchSearch && matchGender) {
+                row.style.display = "";
+                visibleCount++;
+            } else {
+                row.style.display = "none";
+            }
+
+        });
+
+        document.getElementById("totalSiswa").innerText = visibleCount;
+
+    }
+
+</script>
+
+{% endblock %}

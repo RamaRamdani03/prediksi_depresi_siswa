@@ -1,0 +1,206 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h3 class="mb-4" style="font-family:'Poppins',sans-serif; font-weight:600;">
+    Input Kuesioner
+</h3>
+
+<div class="card shadow">
+
+    <div class="card-body">
+
+        <form method="POST">
+
+            <div class="mb-3">
+
+                <label class="form-label">Pilih Siswa</label>
+
+                <select name="id_siswa" class="form-select" required>
+
+                    <option value="">-- Pilih Siswa --</option>
+
+                    {% for s in siswa %}
+                    <option value="{{s[0]}}">{{s[1]}}</option>
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <hr>
+
+
+            <p style="font-weight:600;">1. Tekanan Akademik</p>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="academic_pressure" value="1" required>
+                <label class="form-check-label">Rendah</label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="academic_pressure" value="2">
+                <label class="form-check-label">Sedang</label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="academic_pressure" value="3">
+                <label class="form-check-label">Tinggi</label>
+            </div>
+
+
+            <br>
+
+
+            <p style="font-weight:600;">2. Gangguan Tidur</p>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="sleep_duration" value="1" required>
+                <label class="form-check-label">Baik</label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="sleep_duration" value="2">
+                <label class="form-check-label">Cukup</label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="sleep_duration" value="3">
+                <label class="form-check-label">Buruk</label>
+            </div>
+
+
+            <br>
+
+
+            <p style="font-weight:600;">3. Stres Finansial</p>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="financial_stress" value="1" required>
+                <label class="form-check-label">Rendah</label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="financial_stress" value="2">
+                <label class="form-check-label">Sedang</label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="financial_stress" value="3">
+                <label class="form-check-label">Tinggi</label>
+            </div>
+
+
+            <br>
+
+
+            <p style="font-weight:600;">4. Riwayat Depresi (Family History)</p>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="family_history" value="0" required>
+                <label class="form-check-label">Tidak</label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="family_history" value="1">
+                <label class="form-check-label">Ya</label>
+            </div>
+
+
+            <br>
+
+
+            <p style="font-weight:600;">5. Pikiran Menyakiti Diri</p>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="suicidal_thoughts" value="0" required>
+                <label class="form-check-label">Tidak</label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="suicidal_thoughts" value="1">
+                <label class="form-check-label">Pernah</label>
+            </div>
+
+
+            <br>
+
+
+            <p style="font-weight:600;">6. Kebiasaan Makan</p>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="dietary_habits" value="1" required>
+                <label class="form-check-label">Sehat</label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="dietary_habits" value="2">
+                <label class="form-check-label">Cukup</label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="dietary_habits" value="3">
+                <label class="form-check-label">Tidak Sehat</label>
+            </div>
+
+
+            <br>
+
+
+            <p style="font-weight:600;">7. Kepuasan Belajar</p>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="study_satisfaction" value="1" required>
+                <label class="form-check-label">Rendah</label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="study_satisfaction" value="2">
+                <label class="form-check-label">Sedang</label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="study_satisfaction" value="3">
+                <label class="form-check-label">Tinggi</label>
+            </div>
+
+
+            <br>
+
+
+            <p style="font-weight:600;">8. Jam Belajar</p>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="work_study_hours" value="1" required>
+                <label class="form-check-label">Sedikit (&lt;3 jam)</label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="work_study_hours" value="2">
+                <label class="form-check-label">Sedang (3-6 jam)</label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="work_study_hours" value="3">
+                <label class="form-check-label">Banyak (&gt;6 jam)</label>
+            </div>
+
+
+            <br>
+
+            <button type="submit" class="btn btn-success">
+                Simpan Kuesioner
+            </button>
+
+            <a href="/kuesioner" class="btn btn-secondary">
+                Kembali
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

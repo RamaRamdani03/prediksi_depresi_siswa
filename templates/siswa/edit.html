@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h3 class="mb-4">Edit Data Siswa</h3>
+
+<div class="card shadow">
+
+    <div class="card-body">
+
+        <form method="POST">
+
+            <div class="mb-3">
+                <label class="form-label">Nama</label>
+                <input type="text" name="nama" class="form-control" value="{{ siswa[1] }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Gender</label>
+                <select name="gender" class="form-select">
+
+                    <option value="L" {% if siswa[2]=='L' %}selected{% endif %}>
+                        Laki-laki
+                    </option>
+
+                    <option value="P" {% if siswa[2]=='P' %}selected{% endif %}>
+                        Perempuan
+                    </option>
+
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Umur</label>
+                <input type="number" name="umur" class="form-control" value="{{ siswa[3] }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Kelas</label>
+                <input type="text" name="kelas" class="form-control" value="{{ siswa[4] }}" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                Update
+            </button>
+
+            <a href="/siswa" class="btn btn-secondary">
+                Kembali
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

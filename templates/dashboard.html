@@ -1,0 +1,153 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h3 class="mb-4" style="font-family:'Poppins',sans-serif; font-weight:600;">
+    Dashboard Sistem Prediksi Depresi
+</h3>
+
+<div class="row">
+
+    <div class="col-md-3">
+        <div class="card text-center shadow">
+            <div class="card-body">
+
+                <h6 style="font-family:'Poppins',sans-serif; font-weight:500; letter-spacing:0.5px;">
+                    Total Siswa
+                </h6>
+
+                <h3 style="font-family:'Poppins',sans-serif; font-weight:700;">
+                    {{ total_siswa }}
+                </h3>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-3">
+        <div class="card text-center shadow">
+            <div class="card-body">
+
+                <h6 style="font-family:'Poppins',sans-serif; font-weight:500; letter-spacing:0.5px;">
+                    Total Kuesioner
+                </h6>
+
+                <h3 style="font-family:'Poppins',sans-serif; font-weight:700;">
+                    {{ total_kuesioner }}
+                </h3>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-3">
+        <div class="card text-center shadow">
+            <div class="card-body">
+
+                <h6 style="font-family:'Poppins',sans-serif; font-weight:500; letter-spacing:0.5px;">
+                    Depresi
+                </h6>
+
+                <h3 class="text-danger" style="font-family:'Poppins',sans-serif; font-weight:700;">
+                    {{ total_depresi }}
+                </h3>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-3">
+        <div class="card text-center shadow">
+            <div class="card-body">
+
+                <h6 style="font-family:'Poppins',sans-serif; font-weight:500; letter-spacing:0.5px;">
+                    Tidak Depresi
+                </h6>
+
+                <h3 class="text-success" style="font-family:'Poppins',sans-serif; font-weight:700;">
+                    {{ total_tidak }}
+                </h3>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="row mt-4">
+
+    <div class="col-md-6">
+
+        <div class="card shadow">
+
+            <div class="card-header" style="font-family:'Poppins',sans-serif; font-weight:600;">
+                Statistik Prediksi Depresi
+            </div>
+
+            <div class="card-body text-center">
+
+                <div style="width:300px; height:300px; margin:auto;">
+                    <canvas id="pieChart" data-depresi="{{ total_depresi }}" data-tidak="{{ total_tidak }}">
+                    </canvas>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const canvas = document.getElementById("pieChart");
+
+        const depresi = canvas.dataset.depresi;
+        const tidak = canvas.dataset.tidak;
+
+        const ctx = canvas.getContext("2d");
+
+        new Chart(ctx, {
+
+            type: "pie",
+
+            data: {
+                labels: ["Depresi", "Tidak Depresi"],
+                datasets: [{
+                    data: [depresi, tidak],
+                    backgroundColor: [
+                        "#e74c3c",
+                        "#2ecc71"
+                    ]
+                }]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+
+                rotation: Math.PI,
+
+                plugins: {
+                    legend: {
+                        position: "top"
+                    }
+                }
+
+            }
+
+        });
+
+    });
+
+</script>
+
+{% endblock %}

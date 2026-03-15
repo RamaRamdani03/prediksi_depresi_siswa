@@ -1,0 +1,135 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h3 class="mb-4" style="font-family:'Poppins',sans-serif; font-weight:600;">
+    Data Kuesioner
+</h3>
+
+<div class="card shadow">
+
+    <div class="card-header d-flex justify-content-between align-items-center">
+
+        <span style="font-weight:600;">Daftar Kuesioner</span>
+
+        <a href="/kuesioner/tambah" class="btn btn-primary btn-sm">
+            + Input Kuesioner
+        </a>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead class="table-dark text-center align-middle">
+
+                    <tr>
+                        <th class="text-start">Nama</th>
+                        <th title="Tekanan Akademik">Akademik</th>
+                        <th title="Gangguan Tidur">Tidur</th>
+                        <th title="Stres Finansial">Finansial</th>
+                        <th title="Riwayat Depresi">Riwayat</th>
+                        <th title="Pikiran Menyakiti Diri">Suicidal</th>
+                        <th title="Kebiasaan Makan">Kebiasaan Makan</th>
+                        <th title="Kepuasan Belajar">Kepuasan</th>
+                        <th title="Jam Belajar">Jam Belajar</th>
+                        <th>Aksi</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for k in data %}
+
+                    <tr class="align-middle">
+
+                        <td class="text-start fw-semibold">
+                            {{k[1]}}
+                        </td>
+
+                        <td class="text-center">
+                            {% if k[2] == 1 %}Rendah
+                            {% elif k[2] == 2 %}Sedang
+                            {% else %}Tinggi
+                            {% endif %}
+                        </td>
+
+                        <td class="text-center">
+                            {% if k[3] == 1 %}Baik
+                            {% elif k[3] == 2 %}Cukup
+                            {% else %}Buruk
+                            {% endif %}
+                        </td>
+
+                        <td class="text-center">
+                            {% if k[4] == 1 %}Rendah
+                            {% elif k[4] == 2 %}Sedang
+                            {% else %}Tinggi
+                            {% endif %}
+                        </td>
+
+                        <td class="text-center">
+                            {% if k[5] == 0 %}Tidak
+                            {% else %}Ya
+                            {% endif %}
+                        </td>
+
+                        <td class="text-center">
+                            {% if k[6] == 0 %}Tidak
+                            {% else %}Pernah
+                            {% endif %}
+                        </td>
+
+                        <td class="text-center">
+                            {% if k[7] == 1 %}Sehat
+                            {% elif k[7] == 2 %}Cukup
+                            {% else %}Tidak Sehat
+                            {% endif %}
+                        </td>
+
+                        <td class="text-center">
+                            {% if k[8] == 1 %}Rendah
+                            {% elif k[8] == 2 %}Sedang
+                            {% else %}Tinggi
+                            {% endif %}
+                        </td>
+
+                        <td class="text-center">
+                            {% if k[9] == 1 %}Sedikit
+                            {% elif k[9] == 2 %}Sedang
+                            {% else %}Banyak
+                            {% endif %}
+                        </td>
+
+                        <td class="text-center">
+
+                            <a href="/kuesioner/edit/{{k[0]}}" class="btn btn-warning btn-sm">
+                                Edit
+                            </a>
+
+                            <a href="/kuesioner/delete/{{k[0]}}" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Yakin hapus data?')">
+                                Delete
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
