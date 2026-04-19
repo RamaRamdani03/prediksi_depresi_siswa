@@ -30,19 +30,31 @@ def lihat_siswa():
 def form_tambah():
 
     if request.method == 'POST':
+        nisn = request.form['nisn']
         nama = request.form['nama']
         gender = request.form['gender']
         umur = request.form['umur']
         kelas = request.form['kelas']
 
+        # VALIDASI NISN 10 DIGIT
+        if len(nisn) != 10:
+            return "NISN harus 10 digit!"
+
         cursor = db.cursor()
+
         cursor.execute("""
-            INSERT INTO siswa (nama, gender, umur, kelas)
-            VALUES (%s, %s, %s, %s)
-        """, (nama, gender, umur, kelas))
+            INSERT INTO siswa (nisn, nama, gender, umur, kelas)
+            VALUES (%s, %s, %s, %s, %s)
+        """, (nisn, nama, gender, umur, kelas))
+
+        # ambil id terakhir
+        cursor.execute("SELECT LAST_INSERT_ID()")
+        id_siswa = cursor.fetchone()[0]
+
         cursor.close()
 
-        return redirect('/siswa')
+        # redirect ke kuesioner
+        return redirect(f'/kuesioner/tambah?id_siswa={id_siswa}')
 
     return render_template("siswa/tambah.html")
 
@@ -55,16 +67,20 @@ def edit_siswa(id_siswa):
     cursor = db.cursor()
 
     if request.method == 'POST':
+        nisn = request.form['nisn']
         nama = request.form['nama']
         gender = request.form['gender']
         umur = request.form['umur']
         kelas = request.form['kelas']
 
+        if len(nisn) != 10:
+            return "NISN harus 10 digit!"
+
         cursor.execute("""
             UPDATE siswa
-            SET nama=%s, gender=%s, umur=%s, kelas=%s
+            SET nisn=%s, nama=%s, gender=%s, umur=%s, kelas=%s
             WHERE id_siswa=%s
-        """, (nama, gender, umur, kelas, id_siswa))
+        """, (nisn, nama, gender, umur, kelas, id_siswa))
 
         cursor.close()
         return redirect('/siswa')
@@ -84,5 +100,4 @@ def delete_siswa(id_siswa):
     cursor = db.cursor()
     cursor.execute("DELETE FROM siswa WHERE id_siswa=%s", (id_siswa,))
     cursor.close()
-
     return redirect('/siswa')

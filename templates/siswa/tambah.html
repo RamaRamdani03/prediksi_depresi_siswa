@@ -11,6 +11,11 @@
         <form action="/siswa/tambah" method="POST">
 
             <div class="mb-3">
+                <label class="form-label">NISN</label>
+                <input type="text" name="nisn" class="form-control" minlength="10" maxlength="10" required>
+            </div>
+
+            <div class="mb-3">
                 <label class="form-label">Nama</label>
                 <input type="text" name="nama" class="form-control" required>
             </div>
@@ -28,9 +33,64 @@
                 <input type="number" name="umur" class="form-control" required>
             </div>
 
+            <!-- 🔥 REVISI KELAS -->
             <div class="mb-3">
                 <label class="form-label">Kelas</label>
-                <input type="text" name="kelas" class="form-control" required>
+                <select name="kelas" class="form-select" required>
+                    <option value="">-- Pilih Kelas --</option>
+
+                    <!-- KELAS 10 -->
+                    <optgroup label="Kelas 10">
+                        <option value="10 IPA 1">10 IPA 1</option>
+                        <option value="10 IPA 2">10 IPA 2</option>
+                        <option value="10 IPA 3">10 IPA 3</option>
+                        <option value="10 IPA 4">10 IPA 4</option>
+                        <option value="10 IPA 5">10 IPA 5</option>
+                        <option value="10 IPA 6">10 IPA 6</option>
+                        <option value="10 IPA 7">10 IPA 7</option>
+
+                        <option value="10 IPS 1">10 IPS 1</option>
+                        <option value="10 IPS 2">10 IPS 2</option>
+                        <option value="10 IPS 3">10 IPS 3</option>
+                        <option value="10 IPS 4">10 IPS 4</option>
+                        <option value="10 IPS 5">10 IPS 5</option>
+                    </optgroup>
+
+                    <!-- KELAS 11 -->
+                    <optgroup label="Kelas 11">
+                        <option value="11 IPA 1">11 IPA 1</option>
+                        <option value="11 IPA 2">11 IPA 2</option>
+                        <option value="11 IPA 3">11 IPA 3</option>
+                        <option value="11 IPA 4">11 IPA 4</option>
+                        <option value="11 IPA 5">11 IPA 5</option>
+                        <option value="11 IPA 6">11 IPA 6</option>
+                        <option value="11 IPA 7">11 IPA 7</option>
+
+                        <option value="11 IPS 1">11 IPS 1</option>
+                        <option value="11 IPS 2">11 IPS 2</option>
+                        <option value="11 IPS 3">11 IPS 3</option>
+                        <option value="11 IPS 4">11 IPS 4</option>
+                        <option value="11 IPS 5">11 IPS 5</option>
+                    </optgroup>
+
+                    <!-- KELAS 12 -->
+                    <optgroup label="Kelas 12">
+                        <option value="12 IPA 1">12 IPA 1</option>
+                        <option value="12 IPA 2">12 IPA 2</option>
+                        <option value="12 IPA 3">12 IPA 3</option>
+                        <option value="12 IPA 4">12 IPA 4</option>
+                        <option value="12 IPA 5">12 IPA 5</option>
+                        <option value="12 IPA 6">12 IPA 6</option>
+                        <option value="12 IPA 7">12 IPA 7</option>
+
+                        <option value="12 IPS 1">12 IPS 1</option>
+                        <option value="12 IPS 2">12 IPS 2</option>
+                        <option value="12 IPS 3">12 IPS 3</option>
+                        <option value="12 IPS 4">12 IPS 4</option>
+                        <option value="12 IPS 5">12 IPS 5</option>
+                    </optgroup>
+
+                </select>
             </div>
 
             <button type="submit" class="btn btn-success">
@@ -42,9 +102,7 @@
             </a>
 
         </form>
-
     </div>
-
 </div>
 
 {% endblock %}

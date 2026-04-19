@@ -29,14 +29,12 @@
         <div class="d-flex justify-content-end gap-2 mb-3 align-items-center">
 
             <div class="input-group input-group-sm" style="width:260px;">
-
                 <span class="input-group-text bg-white">
-                    <i class="bi bi-search"></i>    
+                    <i class="bi bi-search"></i>
                 </span>
 
                 <input type="text" id="searchInput" class="form-control" placeholder="Cari siswa..."
                     style="font-style:italic; color:#6c757d;">
-
             </div>
 
             <select id="filterGender" class="form-select form-select-sm"
@@ -49,6 +47,7 @@
             </select>
 
         </div>
+
         <div class="table-responsive">
 
             <table class="table table-hover align-middle" id="tabelSiswa">
@@ -56,6 +55,7 @@
                 <thead class="table-dark">
                     <tr>
                         <th style="width:60px;">No</th>
+                        <th>NISN</th>
                         <th>Nama Siswa</th>
                         <th style="width:150px;">Jenis Kelamin</th>
                         <th style="width:100px;">Umur</th>
@@ -66,16 +66,21 @@
 
                 <tbody>
                     {% for siswa in data %}
-                    <tr data-gender="{{ siswa[2] }}">
+                    <tr data-gender="{{ siswa[3] }}">
                         <td>{{ loop.index }}</td>
+
+                        <!-- NISN -->
                         <td>{{ siswa[1] }}</td>
 
+                        <!-- Nama -->
+                        <td>{{ siswa[2] }}</td>
+
+                        <!-- Gender -->
                         <td>
-                            {% if siswa[2] == 'L' %}
+                            {% if siswa[3] == 'L' %}
                             <span class="badge bg-primary">
                                 Laki-laki
                             </span>
-
                             {% else %}
                             <span class="badge" style="background-color:#ff4da6;">
                                 Perempuan
@@ -83,10 +88,13 @@
                             {% endif %}
                         </td>
 
-                        <td>{{ siswa[3] }}</td>
-
+                        <!-- Umur -->
                         <td>{{ siswa[4] }}</td>
 
+                        <!-- Kelas -->
+                        <td>{{ siswa[5] }}</td>
+
+                        <!-- Aksi -->
                         <td>
                             <a href="/siswa/edit/{{ siswa[0] }}" class="btn btn-warning btn-sm">
                                 Edit
@@ -100,12 +108,12 @@
                     </tr>
                     {% endfor %}
                 </tbody>
+
             </table>
         </div>
     </div>
 
 </div>
-
 
 <script>
 
@@ -126,7 +134,7 @@
 
         rows.forEach(function (row) {
 
-            let nama = row.cells[1].textContent.toLowerCase();
+            let nama = row.cells[2].textContent.toLowerCase(); // ⬅️ index berubah
             let genderRow = row.dataset.gender;
 
             let matchSearch = nama.includes(search);

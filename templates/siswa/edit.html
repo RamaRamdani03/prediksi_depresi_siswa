@@ -11,19 +11,24 @@
         <form method="POST">
 
             <div class="mb-3">
+                <label class="form-label">NISN</label>
+                <input type="text" name="nisn" class="form-control" value="{{ siswa[1] }}" required>
+            </div>
+
+            <div class="mb-3">
                 <label class="form-label">Nama</label>
-                <input type="text" name="nama" class="form-control" value="{{ siswa[1] }}" required>
+                <input type="text" name="nama" class="form-control" value="{{ siswa[2] }}" required>
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Gender</label>
                 <select name="gender" class="form-select">
 
-                    <option value="L" {% if siswa[2]=='L' %}selected{% endif %}>
+                    <option value="L" {% if siswa[3]=='L' %}selected{% endif %}>
                         Laki-laki
                     </option>
 
-                    <option value="P" {% if siswa[2]=='P' %}selected{% endif %}>
+                    <option value="P" {% if siswa[3]=='P' %}selected{% endif %}>
                         Perempuan
                     </option>
 
@@ -32,12 +37,54 @@
 
             <div class="mb-3">
                 <label class="form-label">Umur</label>
-                <input type="number" name="umur" class="form-control" value="{{ siswa[3] }}" required>
+                <input type="number" name="umur" class="form-control" value="{{ siswa[4] }}" required>
             </div>
 
+            <!-- 🔥 REVISI KELAS -->
             <div class="mb-3">
                 <label class="form-label">Kelas</label>
-                <input type="text" name="kelas" class="form-control" value="{{ siswa[4] }}" required>
+                <select name="kelas" class="form-select" required>
+
+                    <!-- KELAS 10 -->
+                    <optgroup label="Kelas 10">
+                        {% for i in range(1,8) %}
+                        <option value="10 IPA {{i}}" {% if siswa[5]=='10 IPA ' ~ i %}selected{% endif %}>10 IPA {{i}}
+                        </option>
+                        {% endfor %}
+
+                        {% for i in range(1,6) %}
+                        <option value="10 IPS {{i}}" {% if siswa[5]=='10 IPS ' ~ i %}selected{% endif %}>10 IPS {{i}}
+                        </option>
+                        {% endfor %}
+                    </optgroup>
+
+                    <!-- KELAS 11 -->
+                    <optgroup label="Kelas 11">
+                        {% for i in range(1,8) %}
+                        <option value="11 IPA {{i}}" {% if siswa[5]=='11 IPA ' ~ i %}selected{% endif %}>11 IPA {{i}}
+                        </option>
+                        {% endfor %}
+
+                        {% for i in range(1,6) %}
+                        <option value="11 IPS {{i}}" {% if siswa[5]=='11 IPS ' ~ i %}selected{% endif %}>11 IPS {{i}}
+                        </option>
+                        {% endfor %}
+                    </optgroup>
+
+                    <!-- KELAS 12 -->
+                    <optgroup label="Kelas 12">
+                        {% for i in range(1,8) %}
+                        <option value="12 IPA {{i}}" {% if siswa[5]=='12 IPA ' ~ i %}selected{% endif %}>12 IPA {{i}}
+                        </option>
+                        {% endfor %}
+
+                        {% for i in range(1,6) %}
+                        <option value="12 IPS {{i}}" {% if siswa[5]=='12 IPS ' ~ i %}selected{% endif %}>12 IPS {{i}}
+                        </option>
+                        {% endfor %}
+                    </optgroup>
+
+                </select>
             </div>
 
             <button type="submit" class="btn btn-primary">
@@ -49,9 +96,7 @@
             </a>
 
         </form>
-
     </div>
-
 </div>
 
 {% endblock %}

@@ -53,6 +53,9 @@ def tambah():
     cursor.execute("SELECT id_siswa,nama FROM siswa")
     siswa = cursor.fetchall()
 
+    # ✅ TAMBAHAN
+    id_siswa_param = request.args.get('id_siswa')
+
     if request.method == 'POST':
 
         id_siswa = request.form.get('id_siswa')
@@ -92,11 +95,15 @@ def tambah():
         work_study_hours
         ))
 
-        return redirect('/kuesioner')
+        return redirect('/prediksi')
 
     cursor.close()
 
-    return render_template("kuesioner/tambah.html", siswa=siswa)
+    return render_template(
+        "kuesioner/tambah.html",
+        siswa=siswa,
+        id_siswa_param=id_siswa_param
+    )
 
 
 # =========================
