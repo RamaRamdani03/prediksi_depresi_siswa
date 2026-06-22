@@ -4,15 +4,40 @@
 
 <h3 class="mb-4">Edit Data Siswa</h3>
 
-<div class="card shadow">
+<!-- 🔥 ALERT ERROR -->
+{% if request.args.get('error') == 'nisn' %}
+<div class="alert alert-danger">
+    NISN sudah digunakan oleh siswa lain!
+</div>
+{% elif request.args.get('error') == 'nisn_format' %}
+<div class="alert alert-warning">
+    NISN harus 10 digit angka!
+</div>
+{% elif request.args.get('error') == 'umur' %}
+<div class="alert alert-warning">
+    Umur harus berupa angka!
+</div>
+{% elif request.args.get('error') == 'gender' %}
+<div class="alert alert-warning">
+    Gender tidak valid!
+</div>
+{% endif %}
 
+<div class="card shadow">
     <div class="card-body">
 
         <form method="POST">
 
             <div class="mb-3">
                 <label class="form-label">NISN</label>
-                <input type="text" name="nisn" class="form-control" value="{{ siswa[1] }}" required>
+                <input type="text" name="nisn" id="nisn" class="form-control" value="{{ siswa[1] }}" pattern="[0-9]{10}"
+                    inputmode="numeric" maxlength="10" minlength="10"
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+
+                <!-- 🔥 FEEDBACK -->
+                <div id="nisn-feedback" class="text-danger mt-1" style="display:none;">
+                    NISN sudah digunakan!
+                </div>
             </div>
 
             <div class="mb-3">
@@ -23,15 +48,8 @@
             <div class="mb-3">
                 <label class="form-label">Gender</label>
                 <select name="gender" class="form-select">
-
-                    <option value="L" {% if siswa[3]=='L' %}selected{% endif %}>
-                        Laki-laki
-                    </option>
-
-                    <option value="P" {% if siswa[3]=='P' %}selected{% endif %}>
-                        Perempuan
-                    </option>
-
+                    <option value="L" {% if siswa[3]=='L' %}selected{% endif %}>Laki-laki</option>
+                    <option value="P" {% if siswa[3]=='P' %}selected{% endif %}>Perempuan</option>
                 </select>
             </div>
 
@@ -40,46 +58,48 @@
                 <input type="number" name="umur" class="form-control" value="{{ siswa[4] }}" required>
             </div>
 
-            <!-- 🔥 REVISI KELAS -->
             <div class="mb-3">
                 <label class="form-label">Kelas</label>
                 <select name="kelas" class="form-select" required>
 
-                    <!-- KELAS 10 -->
                     <optgroup label="Kelas 10">
                         {% for i in range(1,8) %}
-                        <option value="10 IPA {{i}}" {% if siswa[5]=='10 IPA ' ~ i %}selected{% endif %}>10 IPA {{i}}
+                        <option value="10 IPA {{i}}" {% if siswa[5]=='10 IPA ' ~ i %}selected{% endif %}>
+                            10 IPA {{i}}
                         </option>
                         {% endfor %}
 
                         {% for i in range(1,6) %}
-                        <option value="10 IPS {{i}}" {% if siswa[5]=='10 IPS ' ~ i %}selected{% endif %}>10 IPS {{i}}
+                        <option value="10 IPS {{i}}" {% if siswa[5]=='10 IPS ' ~ i %}selected{% endif %}>
+                            10 IPS {{i}}
                         </option>
                         {% endfor %}
                     </optgroup>
 
-                    <!-- KELAS 11 -->
                     <optgroup label="Kelas 11">
                         {% for i in range(1,8) %}
-                        <option value="11 IPA {{i}}" {% if siswa[5]=='11 IPA ' ~ i %}selected{% endif %}>11 IPA {{i}}
+                        <option value="11 IPA {{i}}" {% if siswa[5]=='11 IPA ' ~ i %}selected{% endif %}>
+                            11 IPA {{i}}
                         </option>
                         {% endfor %}
 
                         {% for i in range(1,6) %}
-                        <option value="11 IPS {{i}}" {% if siswa[5]=='11 IPS ' ~ i %}selected{% endif %}>11 IPS {{i}}
+                        <option value="11 IPS {{i}}" {% if siswa[5]=='11 IPS ' ~ i %}selected{% endif %}>
+                            11 IPS {{i}}
                         </option>
                         {% endfor %}
                     </optgroup>
 
-                    <!-- KELAS 12 -->
                     <optgroup label="Kelas 12">
                         {% for i in range(1,8) %}
-                        <option value="12 IPA {{i}}" {% if siswa[5]=='12 IPA ' ~ i %}selected{% endif %}>12 IPA {{i}}
+                        <option value="12 IPA {{i}}" {% if siswa[5]=='12 IPA ' ~ i %}selected{% endif %}>
+                            12 IPA {{i}}
                         </option>
                         {% endfor %}
 
                         {% for i in range(1,6) %}
-                        <option value="12 IPS {{i}}" {% if siswa[5]=='12 IPS ' ~ i %}selected{% endif %}>12 IPS {{i}}
+                        <option value="12 IPS {{i}}" {% if siswa[5]=='12 IPS ' ~ i %}selected{% endif %}>
+                            12 IPS {{i}}
                         </option>
                         {% endfor %}
                     </optgroup>
@@ -87,7 +107,7 @@
                 </select>
             </div>
 
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" id="submitBtn" class="btn btn-primary">
                 Update
             </button>
 
@@ -98,5 +118,31 @@
         </form>
     </div>
 </div>
+
+<!-- 🔥 SCRIPT -->
+<script>
+    const nisnInput = document.getElementById("nisn");
+    const feedback = document.getElementById("nisn-feedback");
+    const submitBtn = document.getElementById("submitBtn");
+    const idSiswa = "{{ siswa[0] }}";
+
+    nisnInput.addEventListener("blur", function () {
+        let nisn = this.value;
+
+        if (nisn.length === 10) {
+            fetch(`/cek_nisn_edit?nisn=${nisn}&id_siswa=${idSiswa}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.exists) {
+                        feedback.style.display = "block";
+                        submitBtn.disabled = true;
+                    } else {
+                        feedback.style.display = "none";
+                        submitBtn.disabled = false;
+                    }
+                });
+        }
+    });
+</script>
 
 {% endblock %}

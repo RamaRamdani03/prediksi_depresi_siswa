@@ -1,98 +1,87 @@
 {% extends "layout.html" %}
-
 {% block content %}
 
-<h3 class="mb-4" style="font-family:'Poppins',sans-serif; font-weight:600;">
-    Edit Kuesioner
-</h3>
+<h3 class="mb-4">Edit Kuesioner</h3>
 
 <div class="card shadow">
-
     <div class="card-body">
 
         <form method="POST">
 
-            <p style="font-weight:600;">Tekanan Akademik</p>
+            <!-- Academic -->
+            <p>Tekanan Akademik (0-5)</p>
+            <small class="text-muted">0 = Tidak ada tekanan, 5 = Sangat tinggi</small><br>
+            {% for i in range(0,6) %}
+            <input type="radio" name="academic_pressure" value="{{ i }}" {% if k[2]==i %}checked{% endif %}> {{ i }}
+            {% endfor %}
 
-            <input type="radio" name="academic_pressure" value="1" {% if k[2]==1 %}checked{% endif %}> Rendah
-            <input type="radio" name="academic_pressure" value="2" {% if k[2]==2 %}checked{% endif %}> Sedang
-            <input type="radio" name="academic_pressure" value="3" {% if k[2]==3 %}checked{% endif %}> Tinggi
+            <!-- Sleep -->
+            <p class="mt-3">Durasi Tidur</p>
+            <input type="radio" name="sleep_duration" value="Less than 5 hours" {% if k[3]=='Less than 5 hours'
+                %}checked{% endif %}>
+            < 5 jam <input type="radio" name="sleep_duration" value="5-6 hours" {% if k[3]=='5-6 hours' %}checked{%
+                endif %}> 5-6 jam
+                <input type="radio" name="sleep_duration" value="7-8 hours" {% if k[3]=='7-8 hours' %}checked{% endif
+                    %}> 7-8 jam
+                <input type="radio" name="sleep_duration" value="More than 8 hours" {% if k[3]=='More than 8 hours'
+                    %}checked{% endif %}> > 8 jam
 
-            <br><br>
+                <!-- Financial -->
+                <p class="mt-3">Tekanan Finansial (1-5)</p>
+                <small class="text-muted">1 = Sangat rendah, 5 = Sangat tinggi</small><br>
+                {% for i in range(1,6) %}
+                <input type="radio" name="financial_stress" value="{{ i }}" {% if k[4]==i %}checked{% endif %}> {{ i }}
+                {% endfor %}
 
+                <!-- Family -->
+                <p class="mt-3">Riwayat gangguan mental dalam keluarga</p>
+                <input type="radio" name="family_history" value="No" {% if k[5]=='No' %}checked{% endif %}>
+                Tidak
+                <input type="radio" name="family_history" value="Yes" {% if k[5]=='Yes' %}checked{% endif %}> Ya
 
-            <p style="font-weight:600;">Gangguan Tidur</p>
+                <!-- Suicide -->
+                <p class="mt-3">Pernah memiliki pikiran bunuh diri</p>
+                <input type="radio" name="suicidal_thoughts" value="No" {% if k[6]=='No' %}checked{% endif %}> Tidak
 
-            <input type="radio" name="sleep_duration" value="1" {% if k[3]==1 %}checked{% endif %}> Baik
-            <input type="radio" name="sleep_duration" value="2" {% if k[3]==2 %}checked{% endif %}> Cukup
-            <input type="radio" name="sleep_duration" value="3" {% if k[3]==3 %}checked{% endif %}> Buruk
+                <input type="radio" name="suicidal_thoughts" value="Yes" {% if k[6]=='Yes' %}checked{% endif %}> Ya
 
-            <br><br>
+                <!-- Diet -->
+                <p class="mt-3">Pola Makan</p>
+                <input type="radio" name="dietary_habits" value="Healthy" {% if k[7]=='Healthy' %}checked{% endif %}>
+                Sehat
+                <input type="radio" name="dietary_habits" value="Moderate" {% if k[7]=='Moderate' %}checked{% endif %}>
+                Cukup
+                <input type="radio" name="dietary_habits" value="Unhealthy" {% if k[7]=='Unhealthy' %}checked{% endif
+                    %}> Tidak Sehat
+                <input type="radio" name="dietary_habits" value="Others" {% if k[7]=='Others' %}checked{% endif %}>
+                Lainnya
 
+                <!-- Study -->
+                <p class="mt-3">Kepuasan Belajar (0-5)</p>
+                <small class="text-muted">0 = Tidak puas, 5 = Sangat puas</small><br>
+                {% for i in range(0,6) %}
+                <input type="radio" name="study_satisfaction" value="{{ i }}" {% if k[8]==i %}checked{% endif %}> {{ i
+                }}
+                {% endfor %}
 
-            <p style="font-weight:600;">Stres Finansial</p>
+                <!-- Hours -->
+                <p class="mt-3">Jam Belajar / Bekerja</p>
+                <select name="work_study_hours" class="form-select">
+                    {% for i in range(0,13) %}
+                    <option value="{{ i }}" {% if k[9]==i %}selected{% endif %}>
+                        {{ i }} jam
+                    </option>
+                    {% endfor %}
+                </select>
 
-            <input type="radio" name="financial_stress" value="1" {% if k[6]==1 %}checked{% endif %}> Rendah
-            <input type="radio" name="financial_stress" value="2" {% if k[6]==2 %}checked{% endif %}> Sedang
-            <input type="radio" name="financial_stress" value="3" {% if k[6]==3 %}checked{% endif %}> Tinggi
+                <br>
 
-            <br><br>
-
-
-            <p style="font-weight:600;">Riwayat Depresi</p>
-
-            <input type="radio" name="family_history" value="0" {% if k[7]==0 %}checked{% endif %}> Tidak
-            <input type="radio" name="family_history" value="1" {% if k[7]==1 %}checked{% endif %}> Ya
-
-            <br><br>
-
-
-            <p style="font-weight:600;">Pikiran Menyakiti Diri</p>
-
-            <input type="radio" name="suicidal_thoughts" value="0" {% if k[8]==0 %}checked{% endif %}> Tidak
-            <input type="radio" name="suicidal_thoughts" value="1" {% if k[8]==1 %}checked{% endif %}> Pernah
-
-            <br><br>
-
-
-            <p style="font-weight:600;">Kebiasaan Makan</p>
-
-            <input type="radio" name="dietary_habits" value="1" {% if k[4]==1 %}checked{% endif %}> Sehat
-            <input type="radio" name="dietary_habits" value="2" {% if k[4]==2 %}checked{% endif %}> Cukup
-            <input type="radio" name="dietary_habits" value="3" {% if k[4]==3 %}checked{% endif %}> Tidak Sehat
-
-            <br><br>
-
-
-            <p style="font-weight:600;">Kepuasan Belajar</p>
-
-            <input type="radio" name="study_satisfaction" value="1" {% if k[5]==1 %}checked{% endif %}> Rendah
-            <input type="radio" name="study_satisfaction" value="2" {% if k[5]==2 %}checked{% endif %}> Sedang
-            <input type="radio" name="study_satisfaction" value="3" {% if k[5]==3 %}checked{% endif %}> Tinggi
-
-            <br><br>
-
-
-            <p style="font-weight:600;">Jam Belajar</p>
-
-            <input type="radio" name="work_study_hours" value="1" {% if k[9]==1 %}checked{% endif %}> Sedikit
-            <input type="radio" name="work_study_hours" value="2" {% if k[9]==2 %}checked{% endif %}> Sedang
-            <input type="radio" name="work_study_hours" value="3" {% if k[9]==3 %}checked{% endif %}> Banyak
-
-            <br><br>
-
-            <button type="submit" class="btn btn-success">
-                Update
-            </button>
-
-            <a href="/kuesioner" class="btn btn-secondary">
-                Kembali
-            </a>
+                <button class="btn btn-success">Update</button>
+                <a href="/kuesioner" class="btn btn-secondary">Kembali</a>
 
         </form>
 
     </div>
-
 </div>
 
 {% endblock %}

@@ -4,15 +4,40 @@
 
 <h3 class="mb-4">Tambah Data Siswa</h3>
 
-<div class="card shadow">
+<!-- 🔥 ALERT ERROR -->
+{% if request.args.get('error') == 'nisn' %}
+<div class="alert alert-danger">
+    NISN sudah terdaftar!
+</div>
+{% elif request.args.get('error') == 'nisn_format' %}
+<div class="alert alert-warning">
+    NISN harus 10 digit angka!
+</div>
+{% elif request.args.get('error') == 'umur' %}
+<div class="alert alert-warning">
+    Umur harus berupa angka!
+</div>
+{% elif request.args.get('error') == 'gender' %}
+<div class="alert alert-warning">
+    Gender tidak valid!
+</div>
+{% endif %}
 
+<div class="card shadow">
     <div class="card-body">
 
         <form action="/siswa/tambah" method="POST">
 
             <div class="mb-3">
                 <label class="form-label">NISN</label>
-                <input type="text" name="nisn" class="form-control" minlength="10" maxlength="10" required>
+                <input type="text" name="nisn" id="nisn" class="form-control" pattern="[0-9]{10}" inputmode="numeric"
+                    maxlength="10" minlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required
+                    title="NISN harus berupa 10 digit angka">
+
+                <!-- 🔥 FEEDBACK -->
+                <div id="nisn-feedback" class="text-danger mt-1" style="display:none;">
+                    NISN sudah digunakan!
+                </div>
             </div>
 
             <div class="mb-3">
@@ -30,16 +55,14 @@
 
             <div class="mb-3">
                 <label class="form-label">Umur</label>
-                <input type="number" name="umur" class="form-control" required>
+                <input type="number" name="umur" class="form-control" inputmode="numeric" required>
             </div>
 
-            <!-- 🔥 REVISI KELAS -->
             <div class="mb-3">
                 <label class="form-label">Kelas</label>
                 <select name="kelas" class="form-select" required>
                     <option value="">-- Pilih Kelas --</option>
 
-                    <!-- KELAS 10 -->
                     <optgroup label="Kelas 10">
                         <option value="10 IPA 1">10 IPA 1</option>
                         <option value="10 IPA 2">10 IPA 2</option>
@@ -56,7 +79,6 @@
                         <option value="10 IPS 5">10 IPS 5</option>
                     </optgroup>
 
-                    <!-- KELAS 11 -->
                     <optgroup label="Kelas 11">
                         <option value="11 IPA 1">11 IPA 1</option>
                         <option value="11 IPA 2">11 IPA 2</option>
@@ -73,7 +95,6 @@
                         <option value="11 IPS 5">11 IPS 5</option>
                     </optgroup>
 
-                    <!-- KELAS 12 -->
                     <optgroup label="Kelas 12">
                         <option value="12 IPA 1">12 IPA 1</option>
                         <option value="12 IPA 2">12 IPA 2</option>
@@ -93,7 +114,7 @@
                 </select>
             </div>
 
-            <button type="submit" class="btn btn-success">
+            <button type="submit" id="submitBtn" class="btn btn-success">
                 Simpan
             </button>
 
@@ -104,5 +125,30 @@
         </form>
     </div>
 </div>
+
+<!-- 🔥 SCRIPT -->
+<script>
+    const nisnInput = document.getElementById("nisn");
+    const feedback = document.getElementById("nisn-feedback");
+    const submitBtn = document.getElementById("submitBtn");
+
+    nisnInput.addEventListener("blur", function () {
+        let nisn = this.value;
+
+        if (nisn.length === 10) {
+            fetch(`/cek_nisn?nisn=${nisn}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.exists) {
+                        feedback.style.display = "block";
+                        submitBtn.disabled = true;
+                    } else {
+                        feedback.style.display = "none";
+                        submitBtn.disabled = false;
+                    }
+                });
+        }
+    });
+</script>
 
 {% endblock %}
